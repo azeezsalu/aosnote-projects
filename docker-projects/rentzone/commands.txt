@@ -25,3 +25,6 @@ aws ecr get-login-password | docker login --username AWS --password-stdin <aws_a
 docker push <repository-uri>
   
 ----------------------------------------------------------------
+
+# shh tennel command
+ssh -i <key_pier.pem> ec2-user@<public-ip> -L 3306:<rds-endpoint>:3306 -N
