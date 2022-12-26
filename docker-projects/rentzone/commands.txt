@@ -12,8 +12,6 @@ chmod +x build_image.sh
 aws ecr create-repository --repository-name <repository-name> --region <region>
   
 ----------------------------------------------------------------
-  
-# push image to ecr repository
 
 # retag image 
 docker tag <image-tag> <repository-uri>
