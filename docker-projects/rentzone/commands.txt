@@ -1,9 +1,7 @@
-# make shell script executable
-
-PowerShell 
+# make shell script executable powershell: 
 Set-ExecutionPolicy -ExecutionPolicy Unrestricted
 
-MAC:
+# make shell script executable mac:
 chmod +x build_image.sh
 
 ----------------------------------------------------------------
