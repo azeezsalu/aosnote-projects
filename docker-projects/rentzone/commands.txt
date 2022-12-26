@@ -13,16 +13,19 @@ aws ecr create-repository --repository-name <repository-name> --region <region>
   
 ----------------------------------------------------------------
 
-# retag image 
+# build docker image
+docker build -t <image-tag> .
+
+# retag docker image 
 docker tag <image-tag> <repository-uri>
 
 # login to ecr
 aws ecr get-login-password | docker login --username AWS --password-stdin <aws_account_id>.dkr.ecr.<region>.amazonaws.com
 
-# push image to the ecr repository 
+# push docker image to ecr repository 
 docker push <repository-uri>
   
 ----------------------------------------------------------------
 
-# shh tennel command
+# shh tennel command for powershell
 ssh -i <key_pier.pem> ec2-user@<public-ip> -L 3306:<rds-endpoint>:3306 -N
