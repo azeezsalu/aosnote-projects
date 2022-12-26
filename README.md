@@ -1,4 +1,4 @@
-# aosnote-projects
+# AOS Note Projects
 This repository contains all the reference files for the aos note projects
 
 ------------------------------------------------------------------------
