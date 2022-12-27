@@ -11,9 +11,6 @@ aws ecr create-repository --repository-name <repository-name> --region <region>
   
 ----------------------------------------------------------------
 
-# build docker image
-docker build -t <image-tag> .
-
 # retag docker image 
 docker tag <image-tag> <repository-uri>
 
