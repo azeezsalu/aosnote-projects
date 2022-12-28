@@ -22,5 +22,10 @@ docker push <repository-uri>
   
 ----------------------------------------------------------------
 
-# shh tennel command for powershell
+# to create an ssh tunnel in powershell, execute the following command:
 ssh -i <key_pier.pem> ec2-user@<public-ip> -L 3306:<rds-endpoint>:3306 -N
+
+
+# to create an ssh tunnel in linux or macOS, execute the following commands:
+ssh -N -L 3336:127.0.0.1:3306 ec2-user@<server_ip>
+mysql -u MYSQL_USER -p -h 127.0.0.1
