@@ -15,10 +15,12 @@ This repository contains all the reference files for the aos note projects
 - Deploy a Website with Terraform Modules: https://www.aosnote.com/offers/zb9QXkWt/checkout
 - Create CICD to Deploy a Dynamic Website: https://www.aosnote.com/offers/kxmjrHxJ/checkout
 - Python and AWS Lambda Project: https://www.aosnote.com/offers/fBLX234L/checkout
+
 ------------------------------------------------------------------------
 # Cloud Mentorship Program 👇 
 ------------------------------------------------------------------------
 6 Months Cloud/DevOps Bootcamp: https://www.aosnote.com/offers/SZFctCkU/checkout
+
 ------------------------------------------------------------------------
 # Free AWS Tutorials 👇 
 ------------------------------------------------------------------------
