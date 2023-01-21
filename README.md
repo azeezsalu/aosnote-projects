@@ -19,3 +19,7 @@ This repository contains all the reference files for the aos note projects
 # Cloud Mentorship Program 👇 
 ------------------------------------------------------------------------
 6 Months Cloud/DevOps Bootcamp: https://www.aosnote.com/offers/SZFctCkU/checkout
+------------------------------------------------------------------------
+# Free AWS Tutorials 👇 
+------------------------------------------------------------------------
+YouTube: https://www.youtube.com/c/AOSNote
