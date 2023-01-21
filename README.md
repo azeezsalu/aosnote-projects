@@ -16,6 +16,6 @@ This repository contains all the reference files for the aos note projects
 - Create CICD to Deploy a Dynamic Website: https://www.aosnote.com/offers/kxmjrHxJ/checkout
 - Python and AWS Lambda Project: https://www.aosnote.com/offers/fBLX234L/checkout
 ------------------------------------------------------------------------
-# Bootcamp 👇 
+# Cloud Mentorship Program 👇 
 ------------------------------------------------------------------------
 6 Months Cloud/DevOps Bootcamp: https://www.aosnote.com/offers/SZFctCkU/checkout
