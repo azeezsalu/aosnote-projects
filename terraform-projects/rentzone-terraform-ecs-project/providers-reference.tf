@@ -1,4 +1,4 @@
-# configured aws provider to establish a secure connection between terraform and aws
+# configure aws provider to establish a secure connection between terraform and aws
 provider "aws" {
   region  = 
   profile = 
