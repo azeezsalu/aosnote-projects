@@ -27,5 +27,6 @@ ssh -i <key_pier.pem> ec2-user@<public-ip> -L 3306:<rds-endpoint>:3306 -N
 
 
 # to create an ssh tunnel in linux or macOS, execute the following commands:
-ssh -N -L 3336:127.0.0.1:3306 ec2-user@<server_ip>
-mysql -u MYSQL_USER -p -h 127.0.0.1
+ssh -i "YOUR_EC2_KEY" -L LOCAL_PORT:RDS_ENDPOINT:REMOTE_PORT EC2_USER@EC2_HOST -N -f
+
+Note: Be sure to replace YOUR_EC2_KEY, LOCAL_PORT, RDS_ENDPOINT, REMOTE_PORT, EC2_USER, and EC2_HOST with your relevant information.
