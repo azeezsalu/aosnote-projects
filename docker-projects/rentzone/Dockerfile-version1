@@ -1,5 +1,5 @@
 # Use the latest version of the Amazon Linux base image
-FROM amazonlinux:latest
+FROM amazonlinux:2
 
 # Update all installed packages to thier latest versions
 RUN yum update -y 
