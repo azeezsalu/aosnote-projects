@@ -1,0 +1,115 @@
+  # Build AWS infrastructure
+  deploy_aws_infrastructure:
+    name: Build AWS infrastructure
+    needs: 
+    runs-on: 
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 
+
+      - name: Run Terraform initialize
+        working-directory: 
+        run: 
+
+      - name: Run Terraform apply/destroy
+        working-directory: 
+        run: 
+
+      - name: Get Terraform output image name
+        if: env.TERRAFORM_ACTION == 'apply'
+        working-directory: 
+        run: |
+          IMAGE_NAME_VALUE=$(terraform output -raw image_name | grep -Eo "^[^:]+" | tail -n 1)
+          echo "IMAGE_NAME=$IMAGE_NAME_VALUE" >> $GITHUB_ENV
+
+      - name: Get Terraform output domain name
+        if: env.TERRAFORM_ACTION == 'apply'
+        working-directory: ./iac
+        run: |
+          DOMAIN_NAME_VALUE=$(terraform output -raw domain_name | grep -Eo "^[^:]+" | tail -n 1)
+          echo "DOMAIN_NAME=$DOMAIN_NAME_VALUE" >> $GITHUB_ENV
+
+      - name: Get Terraform output RDS endpoint
+        if: env.TERRAFORM_ACTION == 'apply'
+        working-directory: ./iac
+        run: |
+          RDS_ENDPOINT_VALUE=$(terraform output -raw rds_endpoint | grep -Eo "^[^:]+" | tail -n 1)
+          echo "RDS_ENDPOINT=$RDS_ENDPOINT_VALUE" >> $GITHUB_ENV
+
+      - name: Get Terraform output image tag
+        if: env.TERRAFORM_ACTION == 'apply'
+        working-directory: ./iac
+        run: |
+          IMAGE_TAG_VALUE=$(terraform output -raw image_tag | grep -Eo "^[^:]+" | tail -n 1)
+          echo "IMAGE_TAG=$IMAGE_TAG_VALUE" >> $GITHUB_ENV
+
+      - name: Get Terraform output private data subnet az1 id
+        if: env.TERRAFORM_ACTION == 'apply'
+        working-directory: ./iac
+        run: |
+          PRIVATE_DATA_SUBNET_AZ1_ID_VALUE=$(terraform output -raw private_data_subnet_az1_id | grep -Eo "^[^:]+" | tail -n 1)
+          echo "PRIVATE_DATA_SUBNET_AZ1_ID=$PRIVATE_DATA_SUBNET_AZ1_ID_VALUE" >> $GITHUB_ENV
+
+      - name: Get Terraform output runner security group id
+        if: env.TERRAFORM_ACTION == 'apply'
+        working-directory: ./iac
+        run: |
+          RUNNER_SECURITY_GROUP_ID_VALUE=$(terraform output -raw runner_security_group_id | grep -Eo "^[^:]+" | tail -n 1)
+          echo "RUNNER_SECURITY_GROUP_ID=$RUNNER_SECURITY_GROUP_ID_VALUE" >> $GITHUB_ENV
+
+      - name: Get Terraform output task definition name
+        if: env.TERRAFORM_ACTION == 'apply'
+        working-directory: ./iac
+        run: |
+          TASK_DEFINITION_NAME_VALUE=$(terraform output -raw task_definition_name | grep -Eo "^[^:]+" | tail -n 1)
+          echo "TASK_DEFINITION_NAME=$TASK_DEFINITION_NAME_VALUE" >> $GITHUB_ENV
+
+      - name: Get Terraform output ecs cluster name
+        if: env.TERRAFORM_ACTION == 'apply'
+        working-directory: ./iac
+        run: |
+          ECS_CLUSTER_NAME_VALUE=$(terraform output -raw ecs_cluster_name | grep -Eo "^[^:]+" | tail -n 1)
+          echo "ECS_CLUSTER_NAME=$ECS_CLUSTER_NAME_VALUE" >> $GITHUB_ENV
+
+      - name: Get Terraform output ecs service name
+        if: env.TERRAFORM_ACTION == 'apply'
+        working-directory: ./iac
+        run: |
+          ECS_SERVICE_NAME_VALUE=$(terraform output -raw ecs_service_name | grep -Eo "^[^:]+" | tail -n 1)
+          echo "ECS_SERVICE_NAME=$ECS_SERVICE_NAME_VALUE" >> $GITHUB_ENV
+
+      - name: Get Terraform output environment file name
+        if: env.TERRAFORM_ACTION == 'apply'
+        working-directory: ./iac
+        run: |
+          ENVIRONMENT_FILE_NAME_VALUE=$(terraform output -raw environment_file_name | grep -Eo "^[^:]+" | tail -n 1)
+          echo "ENVIRONMENT_FILE_NAME=$ENVIRONMENT_FILE_NAME_VALUE" >> $GITHUB_ENV
+
+      - name: Get Terraform output env file bucket name
+        if: env.TERRAFORM_ACTION == 'apply'
+        working-directory: ./iac
+        run: |
+          ENV_FILE_BUCKET_NAME_VALUE=$(terraform output -raw env_file_bucket_name | grep -Eo "^[^:]+" | tail -n 1)
+          echo "ENV_FILE_BUCKET_NAME=$ENV_FILE_BUCKET_NAME_VALUE" >> $GITHUB_ENV
+
+      - name: Print GITHUB_ENV contents
+        run: cat $GITHUB_ENV
+
+    outputs:
+      terraform_action: ${{ env.TERRAFORM_ACTION }}
+      image_name: ${{ env.IMAGE_NAME }}
+      domain_name: ${{ env.DOMAIN_NAME }}
+      rds_endpoint: ${{ env.RDS_ENDPOINT }}
+      image_tag: ${{ env.IMAGE_TAG }}
+      private_data_subnet_az1_id: ${{ env.PRIVATE_DATA_SUBNET_AZ1_ID }}
+      runner_security_group_id: ${{ env.RUNNER_SECURITY_GROUP_ID }}
+      task_definition_name: ${{ env.TASK_DEFINITION_NAME }}
+      ecs_cluster_name: ${{ env.ECS_CLUSTER_NAME }}
+      ecs_service_name: ${{ env.ECS_SERVICE_NAME }}
+      environment_file_name: ${{ env.ENVIRONMENT_FILE_NAME }}
+      env_file_bucket_name: ${{ env.ENV_FILE_BUCKET_NAME }}

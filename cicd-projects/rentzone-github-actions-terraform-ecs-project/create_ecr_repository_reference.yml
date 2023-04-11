@@ -1,0 +1,26 @@
+  # Create ECR repository
+  create_ecr_repository:
+    name: Create ECR repository
+    needs: 
+      - 
+      - 
+    if: 
+    runs-on: 
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Check if ECR repository exists
+        env:
+          IMAGE_NAME: ${{  }}
+        run: |
+          result=$(aws ecr describe-repositories --repository-names "${{  }}" | jq -r '.repositories[0].repositoryName')
+          echo "repo_name=$result" >> $GITHUB_ENV
+        continue-on-error: true
+
+      - name: Create ECR repository
+        env:
+          IMAGE_NAME: ${{  }}
+        if: env.repo_name != env.IMAGE_NAME
+        run: |
+          aws ecr create-repository --repository-name ${{  }}
