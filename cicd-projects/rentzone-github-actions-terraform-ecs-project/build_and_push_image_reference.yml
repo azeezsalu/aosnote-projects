@@ -1,0 +1,48 @@
+  # Build and push Docker image to ECR
+  build_and_push_image:
+    name: Build and push Docker image to ECR
+    needs:
+      - configure_aws_credentials
+      - deploy_aws_infrastructure
+      - create_ecr_repository
+      - start_runner
+    if: needs.deploy_aws_infrastructure.outputs.terraform_action != 'destroy'
+    runs-on: 
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build Docker image
+        env:
+          DOMAIN_NAME: ${{  }}
+          RDS_ENDPOINT: ${{  }}
+          IMAGE_NAME: ${{  }}
+          IMAGE_TAG: ${{  }}
+        run: |
+          docker build \
+          --build-arg PERSONAL_ACCESS_TOKEN=${{  }} \
+          --build-arg GITHUB_USERNAME=${{  }} \
+          --build-arg REPOSITORY_NAME=${{  }} \
+          --build-arg WEB_FILE_ZIP=${{  }} \
+          --build-arg WEB_FILE_UNZIP=${{  }} \
+          --build-arg DOMAIN_NAME=${{  }} \
+          --build-arg RDS_ENDPOINT=${{  }} \
+          --build-arg RDS_DB_NAME=${{  }} \
+          --build-arg RDS_DB_USERNAME=${{  }} \
+          --build-arg RDS_DB_PASSWORD=${{  }} \
+          -t ${{  }}:${{  }} .
+
+      - name: Retag Docker image
+        env:
+          IMAGE_NAME: ${{  }}
+        run: |
+          docker tag ${{  }} ${{  }}/${{  }}
+
+      - name: Push Docker Image to Amazon ECR
+        env:
+          IMAGE_NAME: ${{  }}
+        run: |
+          docker push ${{  }}/${{  }}

@@ -1,0 +1,20 @@
+  # Stop the self-hosted EC2 runner
+  stop_runner:
+    name: Stop self-hosted EC2 runner
+    needs:
+      - configure_aws_credentials
+      - deploy_aws_infrastructure
+      - start_runner
+      - build_and_push_image
+      - export_env_variables
+      - migrate_data
+    if: needs.deploy_aws_infrastructure.outputs.terraform_action != 'destroy' && always() 
+    runs-on: 
+    steps:
+      - name: Stop EC2 runner
+        uses: machulav/ec2-github-runner@v2
+        with:
+          mode: 
+          github-token: ${{  }}
+          label: ${{  }}
+          ec2-instance-id: ${{  }}

@@ -1,0 +1,33 @@
+  # Create environment file and export to S3 
+  export_env_variables:
+    name: Create environment file and export to S3 
+    needs:
+      - configure_aws_credentials
+      - deploy_aws_infrastructure
+      - start_runner
+      - build_and_push_image
+    if: needs.deploy_aws_infrastructure.outputs.terraform_action != 'destroy'
+    runs-on: 
+    steps:
+      - name: Export environment variable values to file
+        env:
+          DOMAIN_NAME: ${{  }}
+          RDS_ENDPOINT: ${{  }}
+          ENVIRONMENT_FILE_NAME: ${{  }}
+        run: |
+          echo "PERSONAL_ACCESS_TOKEN=${{  }}" > ${{  }}
+          echo "GITHUB_USERNAME=${{  }}" >> ${{  }}
+          echo "REPOSITORY_NAME=${{  }}" >> ${{  }}
+          echo "WEB_FILE_ZIP=${{  }}" >> ${{  }}
+          echo "WEB_FILE_UNZIP=${{  }}" >> ${{  }}
+          echo "DOMAIN_NAME=${{  }}" >> ${{  }}
+          echo "RDS_ENDPOINT=${{  }}" >> ${{  }}
+          echo "RDS_DB_NAME=${{  }}" >> ${{  }}
+          echo "RDS_DB_USERNAME=${{  }}" >> ${{  }}
+          echo "RDS_DB_PASSWORD=${{  }}" >> ${{  }}
+
+      - name: Upload environment file to S3
+        env:
+          ENVIRONMENT_FILE_NAME: ${{  }}
+          ENV_FILE_BUCKET_NAME: ${{  }}
+        run: aws s3 cp ${{  }} s3://${{  }}/${{  }}

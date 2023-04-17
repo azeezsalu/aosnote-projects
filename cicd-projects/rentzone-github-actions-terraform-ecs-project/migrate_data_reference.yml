@@ -1,0 +1,37 @@
+  # Migrate data into RDS database with Flyway
+  migrate_data:
+    name: Migrate data into RDS database with Flyway
+    needs:
+      - deploy_aws_infrastructure
+      - start_runner
+      - build_and_push_image
+    if: needs.deploy_aws_infrastructure.outputs.terraform_action != 'destroy'
+    runs-on: 
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Download Flyway
+        run: |
+          wget -qO- https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/${{  }}/flyway-commandline-${{  }}-linux-x64.tar.gz | tar xvz && sudo ln -s `pwd`/flyway-${{  }}/flyway /usr/local/bin 
+
+      - name: Remove the placeholder (sql) directory
+        run: |
+          rm -rf flyway-${{  }}/sql/
+
+      - name: Copy the sql folder into the Flyway sub-directory
+        run: |
+          cp -r sql flyway-${{  }}/
+
+      - name: Run Flyway migrate command
+        env:
+          FLYWAY_URL: jdbc:mysql://${{  }}:3306/${{  }}
+          FLYWAY_USER: ${{  }}
+          FLYWAY_PASSWORD: ${{  }}
+          FLYWAY_LOCATION: filesystem:sql
+        working-directory: ./flyway-${{  }}
+        run: |
+          flyway -url=${{  }} \
+            -user=${{  }} \
+            -password=${{  }} \
+            -locations=${{  }} migrate
