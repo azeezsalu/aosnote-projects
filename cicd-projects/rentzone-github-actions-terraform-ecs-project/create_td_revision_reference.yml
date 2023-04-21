@@ -1,0 +1,39 @@
+  # Create new task definition revision
+  create_td_revision:
+    name: Create new task definition revision
+    needs: 
+      - configure_aws_credentials
+      - deploy_aws_infrastructure 
+      - create_ecr_repository
+      - start_runner
+      - build_and_push_image
+      - export_env_variables
+      - migrate_data
+      - stop_runner
+    if: needs.deploy_aws_infrastructure.outputs.terraform_action != 'destroy'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create new task definition revision
+        env:
+          ECS_FAMILY: ${{  }}
+          ECS_IMAGE: ${{  }}:${{  }}
+        run: |
+          # Get existing task definition
+          TASK_DEFINITION=$(aws ecs describe-task-definition --task-definition ${{  }})
+
+          # update the existing task definition by performing the following actions:
+          # 1. Update the `containerDefinitions[0].image` to the new image we want to deploy
+          # 2. Remove fields from the task definition that are not compatibile with `register-task-definition` --cli-input-json
+          NEW_TASK_DEFINITION=$(echo "$TASK_DEFINITION" | jq --arg IMAGE "${{  }}" '.taskDefinition | .containerDefinitions[0].image = $IMAGE | del(.taskDefinitionArn) | del(.revision) | del(.status) | del(.requiresAttributes) | del(.compatibilities) | del(.registeredAt) | del(.registeredBy)')
+
+          # Register the new task definition and capture the output as JSON
+          NEW_TASK_INFO=$(aws ecs register-task-definition --cli-input-json "$NEW_TASK_DEFINITION")
+
+          # Grab the new revision from the output
+          NEW_TD_REVISION=$(echo "$NEW_TASK_INFO" | jq '.taskDefinition.revision')
+
+          # Set the new revision as an environment variable
+          echo "NEW_TD_REVISION=$NEW_TD_REVISION" >> $GITHUB_ENV
+
+    outputs:
+      new_td_revision: ${{  }}
