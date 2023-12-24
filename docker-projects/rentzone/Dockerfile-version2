@@ -59,7 +59,7 @@ ARG WEB_FILE_UNZIP
 ARG DOMAIN_NAME
 ARG RDS_ENDPOINT
 ARG RDS_DB_NAME
-ARG RDS_DB_USERNAME
+ARG RDS_MASTER_USERNAME
 ARG RDS_DB_PASSWORD
 
 # Use the build argument to set environment variables 
@@ -71,7 +71,7 @@ ENV WEB_FILE_UNZIP=$WEB_FILE_UNZIP
 ENV DOMAIN_NAME=$DOMAIN_NAME
 ENV RDS_ENDPOINT=$RDS_ENDPOINT
 ENV RDS_DB_NAME=$RDS_DB_NAME
-ENV RDS_DB_USERNAME=$RDS_DB_USERNAME
+ENV RDS_MASTER_USERNAME=$RDS_MASTER_USERNAME
 ENV RDS_DB_PASSWORD=$RDS_DB_PASSWORD
 
 # Clone the GitHub repository
@@ -108,7 +108,7 @@ RUN sed -i "/^DB_HOST=/ s/=.*$/=${RDS_ENDPOINT}/" .env
 RUN sed -i "/^DB_DATABASE=/ s/=.*$/=${RDS_DB_NAME}/" .env
 
 # Use the sed command to search the .env file for a line that starts with DB_USERNAME= and replace everything after the = character
-RUN  sed -i "/^DB_USERNAME=/ s/=.*$/=${RDS_DB_USERNAME}/" .env
+RUN  sed -i "/^DB_USERNAME=/ s/=.*$/=${RDS_MASTER_USERNAME}/" .env
 
 # Use the sed command to search the .env file for a line that starts with DB_PASSWORD= and replace everything after the = character
 RUN  sed -i "/^DB_PASSWORD=/ s/=.*$/=${RDS_DB_PASSWORD}/" .env
