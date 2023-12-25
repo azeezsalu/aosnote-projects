@@ -1,0 +1,35 @@
+apiVersion: apps/v1  # Specifies the version of the Kubernetes API you're using
+kind: Deployment  # Defines this as a Deployment object
+metadata:
+  name: rentzone-deployment  # The name of the deployment
+  namespace: rentzone  # The Kubernetes namespace in which this deployment exists
+  labels:
+    app: rentzone  # Key/value pair labels attached to this deployment
+spec:
+  replicas: 1  # Specifies the number of desired pods
+  selector:
+    matchLabels:
+      app: rentzone  # Selector to find which pods to manage, based on labels
+  template:
+    metadata:
+      labels:
+        app: rentzone  # Labels for the pods created by this deployment
+    spec:
+      serviceAccountName: rentzone-service-account  # Service account for the pods
+      volumes:
+      - name: secrets-store-inline  # Defines a volume for storing secrets
+        csi:
+          driver: secrets-store.csi.k8s.io  # Container Storage Interface driver used
+          readOnly: true  # Makes the volume read-only
+          volumeAttributes:
+            secretProviderClass: "rentzone-secret"  # Specifies the secret provider class
+      containers:
+      - name: rentzone  # Name of the container in the pod
+        image: <the uri of your docker image>  # URI of the Docker image to use
+        imagePullPolicy: Always  # Policy for pulling the image, set to always pull
+        ports:
+        - containerPort: 80  # Port that the container exposes
+        volumeMounts:
+        - name: secrets-store-inline  # Mounting the defined volume
+          mountPath: "/mnt/secrets-store"  # Mount path inside the container
+          readOnly: true  # Sets the mounted volume as read-only
