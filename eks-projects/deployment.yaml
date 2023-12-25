@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rentzone-deployment
+  namespace: rentzone
+  labels:
+    app: rentzone
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rentzone
+  template:
+    metadata:
+      labels:
+        app: rentzone
+    spec:
+      serviceAccountName: rentzone-service-account
+      volumes:
+      - name: secrets-store-inline
+        csi:
+          driver: secrets-store.csi.k8s.io
+          readOnly: true
+          volumeAttributes:
+            secretProviderClass: "rentzone-secret"
+      containers:
+      - name: rentzone
+        image: 651783246143.dkr.ecr.us-east-1.amazonaws.com/rentzone:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: secrets-store-inline
+          mountPath: "/mnt/secrets-store"
+          readOnly: true
