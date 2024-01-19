@@ -36,7 +36,7 @@ RUN amazon-linux-extras enable php7.4 && \
 RUN wget https://repo.mysql.com/mysql80-community-release-el7-3.noarch.rpm
 
 # Import the GPG key for the MySQL repository
-RUN rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2022
+RUN rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2023
 
 # Install the MySQL repository package
 RUN yum localinstall mysql80-community-release-el7-3.noarch.rpm -y
@@ -63,7 +63,7 @@ ARG RDS_DB_USERNAME
 ARG RDS_DB_PASSWORD
 
 # Use the build argument to set environment variables 
-ENV PERSONAL_ACCESS_TOKEN=$PERSONAL_ACCESS_TOKEN 
+ENV PERSONAL_ACCESS_TOKEN=$PERSONAL_ACCESS_TOKEN
 ENV GITHUB_USERNAME=$GITHUB_USERNAME
 ENV REPOSITORY_NAME=$REPOSITORY_NAME
 ENV WEB_FILE_ZIP=$WEB_FILE_ZIP
@@ -75,16 +75,16 @@ ENV RDS_DB_USERNAME=$RDS_DB_USERNAME
 ENV RDS_DB_PASSWORD=$RDS_DB_PASSWORD
 
 # Clone the GitHub repository
-RUN git clone https://${PERSONAL_ACCESS_TOKEN}@github.com/${GITHUB_USERNAME}/${REPOSITORY_NAME}.git
+RUN git clone https://$PERSONAL_ACCESS_TOKEN@github.com/$GITHUB_USERNAME/$REPOSITORY_NAME.git
 
 # Unzip the zip folder containing the web files
-RUN unzip ${REPOSITORY_NAME}/${WEB_FILE_ZIP} -d ${REPOSITORY_NAME}/
+RUN unzip $REPOSITORY_NAME/$WEB_FILE_ZIP -d $REPOSITORY_NAME/
 
 # Copy the web files into the HTML directory
-RUN cp -av ${REPOSITORY_NAME}/${WEB_FILE_UNZIP}/. /var/www/html
+RUN cp -av $REPOSITORY_NAME/$WEB_FILE_UNZIP/. /var/www/html
 
 # Remove the repository we cloned
-RUN rm -rf ${REPOSITORY_NAME}
+RUN rm -rf $REPOSITORY_NAME
 
 # Enable the mod_rewrite setting in the httpd.conf file
 RUN sed -i '/<Directory "\/var\/www\/html">/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/httpd/conf/httpd.conf
@@ -99,22 +99,19 @@ RUN chmod -R 777 storage/
 RUN sed -i '/^APP_ENV=/ s/=.*$/=production/' .env
 
 # Use the sed command to search the .env file for a line that starts with APP_URL= and replace everything after the = character
-RUN sed -i "/^APP_URL=/ s/=.*$/=https:\/\/${DOMAIN_NAME}\//" .env
+RUN sed -i "/^APP_URL=/ s/=.*$/=https:\/\/$DOMAIN_NAME\//" .env
 
 # Use the sed command to search the .env file for a line that starts with DB_HOST= and replace everything after the = character
-RUN sed -i "/^DB_HOST=/ s/=.*$/=${RDS_ENDPOINT}/" .env
+RUN sed -i "/^DB_HOST=/ s/=.*$/=$RDS_ENDPOINT/" .env
 
 # Use the sed command to search the .env file for a line that starts with DB_DATABASE= and replace everything after the = character
-RUN sed -i "/^DB_DATABASE=/ s/=.*$/=${RDS_DB_NAME}/" .env
+RUN sed -i "/^DB_DATABASE=/ s/=.*$/=$RDS_DB_NAME/" .env 
 
 # Use the sed command to search the .env file for a line that starts with DB_USERNAME= and replace everything after the = character
-RUN  sed -i "/^DB_USERNAME=/ s/=.*$/=${RDS_DB_USERNAME}/" .env
+RUN  sed -i "/^DB_USERNAME=/ s/=.*$/=$RDS_DB_USERNAME/" .env
 
 # Use the sed command to search the .env file for a line that starts with DB_PASSWORD= and replace everything after the = character
-RUN  sed -i "/^DB_PASSWORD=/ s/=.*$/=${RDS_DB_PASSWORD}/" .env
-
-# Print the .env file to review values
-RUN cat .env
+RUN  sed -i "/^DB_PASSWORD=/ s/=.*$/=$RDS_DB_PASSWORD/" .env
 
 # Copy the file, AppServiceProvider.php from the host file system into the container at the path app/Providers/AppServiceProvider.php
 COPY AppServiceProvider.php app/Providers/AppServiceProvider.php
