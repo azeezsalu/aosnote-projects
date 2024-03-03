@@ -22,7 +22,7 @@ sudo mkdir sql
 sudo aws s3 cp "$S3_URI" sql/
 
 # Run Flyway migration
-sudo flyway -url=jdbc:mysql://"$RDS_ENDPOINT":3306/"$RDS_DB_NAME" \
+flyway -url=jdbc:mysql://"$RDS_ENDPOINT":3306/"$RDS_DB_NAME" \
   -user="$RDS_DB_USERNAME" \
   -password="$RDS_DB_PASSWORD" \
   -locations=filesystem:sql \
