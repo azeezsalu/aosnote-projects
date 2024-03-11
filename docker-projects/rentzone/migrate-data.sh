@@ -10,10 +10,10 @@ RDS_DB_PASSWORD=azeezs123
 sudo yum update -y
 
 # Download and extract Flyway
-sudo wget -qO- https://download.red-gate.com/maven/release/com/redgate/flyway/flyway-commandline/10.4.0/flyway-commandline-10.4.0-linux-x64.tar.gz | tar -xvz
+sudo wget -qO- https://download.red-gate.com/maven/release/com/redgate/flyway/flyway-commandline/10.9.1/flyway-commandline-10.9.1-linux-x64.tar.gz | tar -xvz 
 
 # Create a symbolic link to make Flyway accessible globally
-sudo ln -s $(pwd)/flyway-10.4.0/flyway /usr/local/bin
+sudo ln -s $(pwd)/flyway-10.9.1/flyway /usr/local/bin
 
 # Create the SQL directory for migrations
 sudo mkdir sql
